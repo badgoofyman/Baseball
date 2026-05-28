@@ -14,10 +14,28 @@ public:
 
 	GuessResult guess(const string& guessNumber) {
 		assertIllegalArgument(guessNumber);
-		if (guessNumber == question) {
-			return { true, 3, 0 };
+		int strikes = countStrikes(guessNumber);
+		int balls = countBalls(guessNumber);
+		return { strikes == 3, strikes, balls };
+	}
+
+	int countStrikes(const string& guessNumber) {
+		int count = 0;
+		for (int i = 0; i < 3; i++) {
+			if (guessNumber[i] == question[i]) count++;
 		}
-		return { false, 0, 0 };
+		return count;
+	}
+
+	int countBalls(const string& guessNumber) {
+		int count = 0;
+		for (int i = 0; i < 3; i++) {
+			if (guessNumber[i] == question[i]) continue;
+			for (int j = 0; j < 3; j++) {
+				if (guessNumber[i] == question[j]) count++;
+			}
+		}
+		return count;
 	}
 	
 	void assertIllegalArgument(const string & guessNumber) {
